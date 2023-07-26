@@ -25,50 +25,89 @@ create table mensajes (
     fecha date,
     num_respuestas int,
     username varchar(20),
-    primary key (id),
+    primary key (id, username),
     FOREIGN KEY (username) references usuarios(username) on delete cascade on update cascade
 );
 create table hashtags (
+	id int auto_increment PRIMARY KEY,
 	nombre varchar(20),
-    usos varchar(20),	
-    id_mensajes int,
-    primary key(nombre),
-	FOREIGN KEY (id_mensajes) references mensajes(id) on delete cascade on update cascade
+    usos int
 );
-create table tiene (
+
+create table tendencias (
+	id int auto_increment PRIMARY KEY,
+	nombre varchar(20),
+    usos int
+);
+
+create table tiene_mensaje (
 	id_mensajes_comentario int,
     id_mensajes_twit int,
 	FOREIGN KEY (id_mensajes_comentario) references mensajes(id) on delete cascade on update cascade,
     FOREIGN KEY (id_mensajes_twit) references mensajes(id) on delete cascade on update cascade
 );
 
-INSERT INTO usuarios VALUES ('sgallego', 'Sergio Gallego', 'sgallego@gmail.com', '123456', 666159694, 15, 100, 250, 'España', '2002-07-26', '2002-07-26');
-INSERT INTO usuarios VALUES ('jdnavarro', 'Juan Diego Navarro', 'jdnavarro@gmail.com', 'jdn12', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26');
-INSERT INTO usuarios VALUES ('jgras', 'Jordi Gras', 'jgras@gmail.com', 'jg13', 000000000, 20, 20, 1000, 'España', '2000-01-01','2002-07-26');
-INSERT INTO usuarios VALUES ('mantonio', 'Manuel Antonio', 'mantonio@gmail.com', 'ma14', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26');
-INSERT INTO usuarios VALUES ('msantoro', 'Marco Santoro', 'msantoro@gmail.com', 'ms15', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26');
+CREATE TABLE mensaje_hashtag(
+	id_mensaje int,
+    id_hashtag int,
+    PRIMARY KEY(id_mensaje, id_hashtag),
+    FOREIGN KEY (id_mensaje) REFERENCES mensajes(id)
+    on update cascade
+    on delete cascade,
+    FOREIGN KEY (id_hashtag) REFERENCES hashtags(id)
+    on update cascade
+    on delete cascade
+);
 
-INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES ('Mensaje 1', 23, 100, 50, 10, 23, '2023-07-26', 10, 'sgallego');
-INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES ('Mensaje 2', 50, 80, 23, 11, 21, '2023-07-26', 0, 'jdnavarro');
-INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES ('Mensaje 3', 21, 20, 56, 56, 67, '2023-07-26', 2, 'jgras');
-INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES ('Mensaje 4', 9, 20, 78, 11, 99, '2023-07-26', 20, 'mantonio');
-INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES ('Mensaje 5', 67, 130, 89, 1, 100, '2023-07-26', 5, 'msantoro');
+CREATE TABLE mensaje_tendencia(
+	id_mensaje int,
+    id_tendencia int,
+    PRIMARY KEY(id_mensaje, id_tendencia),
+    FOREIGN KEY (id_mensaje) REFERENCES mensajes(id)
+    on update cascade
+    on delete cascade,
+    FOREIGN KEY (id_tendencia) REFERENCES tendencias(id)
+    on update cascade
+    on delete cascade
+);
 
-INSERT INTO hashtags VALUES ('#Elecciones', 1, 1);
-INSERT INTO hashtags VALUES ('#Accion', 1, 1);
-INSERT INTO hashtags VALUES ('#X', 20, 2);
-INSERT INTO hashtags VALUES ('#Twitter', 10, 3);
-INSERT INTO hashtags VALUES ('#Calor', 15, 4);
-INSERT INTO hashtags VALUES ('#RTX4060', 2, 5);
+INSERT INTO usuarios VALUES ('sgallego', 'Sergio Gallego', 'sgallego@gmail.com', '123456', 666159694, 15, 100, 250, 'España', '2002-07-26', '2002-07-26'),
+('jdnavarro', 'Juan Diego Navarro', 'jdnavarro@gmail.com', 'jdn12', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26'),
+('jgras', 'Jordi Gras', 'jgras@gmail.com', 'jg13', 000000000, 20, 20, 1000, 'España', '2000-01-01','2002-07-26'),
+('mantonio', 'Manuel Antonio', 'mantonio@gmail.com', 'ma14', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26'),
+('msantoro', 'Marco Santoro', 'msantoro@gmail.com', 'ms15', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26');
 
-INSERT INTO tiene VALUES (1,2);
-INSERT INTO tiene VALUES (3,4);
-INSERT INTO tiene VALUES (4,5);
+INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES 
+('Mensaje 1', 23, 100, 50, 10, 23, '2023-07-26', 10, 'sgallego'),
+('Mensaje 2', 50, 80, 23, 11, 21, '2023-07-26', 0, 'jdnavarro'),
+('Mensaje 3', 21, 20, 56, 56, 67, '2023-07-26', 2, 'jgras'),
+('Mensaje 4', 9, 20, 78, 11, 99, '2023-07-26', 20, 'mantonio'),
+('Mensaje 5', 67, 130, 89, 1, 100, '2023-07-26', 5, 'msantoro');
+
+INSERT INTO hashtags (nombre, usos) VALUES 
+('#Elecciones', 1),
+('#Accion', 1),
+('#X', 20),
+('#Twitter', 10),
+('#Calor', 15),
+('#RTX4060', 2);
+
+INSERT INTO tendencias (nombre, usos) VALUES 
+('PP', 234),
+('Nintendo', 1506),
+('TwitterX',356000),
+('Salvame', 78000),
+('Record', 2345),
+('Conferencia', 1200);
+
+INSERT INTO tiene_mensaje VALUES (1,2),(3,4),(4,5);
+INSERT INTO mensaje_hashtag VALUES (1,2),(3,4),(4,5);
+INSERT INTO mensaje_tendencia VALUES (1,2),(3,4),(4,5);
 
 SELECT * FROM usuarios;
 SELECT * FROM mensajes;
-SELECT * FROM tiene;
-SELECT * FROM hashtag;
+SELECT * FROM tiene_mensaje;
+SELECT * FROM hashtags;
 
 UPDATE usuarios SET num_twitts=num_twitts*2 LIMIT 2;
 UPDATE usuarios SET nombre='Sergio Gallego Gudiño' WHERE username='sgallego';
@@ -80,10 +119,11 @@ UPDATE mensajes SET contenido="No te preocupes" WHERE username="msantoro";
 
 DELETE FROM mensajes WHERE id=1;
 DELETE FROM mensajes WHERE id=2;
-DELETE FROM hashtags WHERE id_mensajes=1;
+DELETE FROM hashtags WHERE id=1;
 DELETE FROM usuarios WHERE username='msantoro';
 
 SELECT * FROM usuarios;
 SELECT * FROM mensajes;
-SELECT * FROM tiene;
-SELECT * FROM hashtag;
+SELECT * FROM tiene_mensaje;
+SELECT * FROM mensaje_hashtag;
+SELECT * FROM mensaje_tendencia;
