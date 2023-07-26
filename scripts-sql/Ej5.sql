@@ -42,3 +42,21 @@ CREATE TABLE guardan(
     ON DELETE CASCADE
 );
 
+INSERT INTO piezas (letras, numeros, descripcion, precio) VALUES ('A', 1, 'DESC1', 1);
+INSERT INTO piezas (letras, numeros, descripcion, precio) VALUES ('B', 1, 'DESC2', 2);
+INSERT INTO piezas (letras, numeros, descripcion, precio) VALUES ('C', 1, 'DESC3', 3);
+INSERT INTO piezas VALUES ('A', 2, 'DESC3', 3, 'A', 1);
+INSERT INTO piezas VALUES ('C', 2, 'DESC3', 3, 'C', 1);
+
+INSERT INTO almacenes (descripcion, direccion) VALUES ('DESC1', 'DIR1');
+INSERT INTO almacenes (descripcion, direccion) VALUES ('DESC2', 'DIR2');
+INSERT INTO almacenes (descripcion, direccion) VALUES ('DESC3', 'DIR3');
+
+INSERT INTO estanterias VALUES ('A', 1);
+INSERT INTO estanterias VALUES ('B', 2);
+INSERT INTO estanterias VALUES ('C', 3);
+
+UPDATE piezas SET descripcion = 'Esta es la descripcion de la pieza A numero 1' WHERE letras='A' AND numeros=1;
+UPDATE piezas SET descripcion = 'Esta es la descripcion de la pieza C numero 2' WHERE letras='C' AND numeros=2;
+
+DELETE FROM estanterias WHERE letra = 'A';
