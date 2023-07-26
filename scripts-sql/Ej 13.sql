@@ -13,6 +13,7 @@ CREATE TABLE Estanteria (
     descripcion TEXT,
     letra_almacen VARCHAR(10),
     FOREIGN KEY (letra_almacen) REFERENCES Almacen(letras)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Ingrediente (
@@ -25,8 +26,10 @@ CREATE TABLE Almacena (
     id_ingrediente INT,
     cantidad INT,
     PRIMARY KEY (numero_estanteria, id_ingrediente),
-    FOREIGN KEY (numero_estanteria) REFERENCES Estanteria(numero),
+    FOREIGN KEY (numero_estanteria) REFERENCES Estanteria(numero)
+    ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_ingrediente) REFERENCES Ingrediente(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Plato (
@@ -41,8 +44,10 @@ CREATE TABLE Usa (
     id_plato INT,
     cantidad INT,
     PRIMARY KEY (id_ingrediente, id_plato),
-    FOREIGN KEY (id_ingrediente) REFERENCES Ingrediente(id),
+    FOREIGN KEY (id_ingrediente) REFERENCES Ingrediente(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_plato) REFERENCES Plato(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Empleado (
@@ -55,19 +60,29 @@ CREATE TABLE Empleado (
 );
 
 CREATE TABLE Pinche (
-    dni VARCHAR(10) PRIMARY KEY,
-    fecha_nacimiento DATE
+	id INT PRIMARY KEY,
+    dni VARCHAR(10),
+    fecha_nacimiento DATE,
+    FOREIGN KEY (dni) REFERENCES Empleado(dni)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Cocinero (
     dni VARCHAR(10) PRIMARY KEY,
-    anos_servicio INT
+    id_pinche INT,
+    anos_servicio INT,
+    FOREIGN KEY (dni) REFERENCES Empleado(dni)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_pinche) REFERENCES Pinche(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Prepara (
     dni_cocinero VARCHAR(10),
     id_plato INT,
     PRIMARY KEY (dni_cocinero, id_plato),
-    FOREIGN KEY (dni_cocinero) REFERENCES Cocinero(dni),
+    FOREIGN KEY (dni_cocinero) REFERENCES Cocinero(dni)
+    ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_plato) REFERENCES Plato(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
