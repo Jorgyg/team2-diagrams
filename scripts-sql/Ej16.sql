@@ -1,4 +1,3 @@
-drop database twitter;
 create database twitter;
 use twitter;
 create table usuarios (
