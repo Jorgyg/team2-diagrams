@@ -23,10 +23,12 @@ create table mensajes (
     bookmarks int,
     citas varchar(20),
     fecha date,
+    id_mensaje_og int,
     num_respuestas int,
     username varchar(20),
     primary key (id, username),
-    FOREIGN KEY (username) references usuarios(username) on delete cascade on update cascade
+    FOREIGN KEY (username) references usuarios(username) on delete cascade on update cascade,
+    FOREIGN KEY (id_mensaje_og) references mensajes(id) on delete cascade on update cascade
 );
 create table hashtags (
 	id int auto_increment PRIMARY KEY,
@@ -38,13 +40,6 @@ create table tendencias (
 	id int auto_increment PRIMARY KEY,
 	nombre varchar(20),
     usos int
-);
-
-create table tiene_mensaje (
-	id_mensajes_comentario int,
-    id_mensajes_twit int,
-	FOREIGN KEY (id_mensajes_comentario) references mensajes(id) on delete cascade on update cascade,
-    FOREIGN KEY (id_mensajes_twit) references mensajes(id) on delete cascade on update cascade
 );
 
 CREATE TABLE mensaje_hashtag(
@@ -77,12 +72,14 @@ INSERT INTO usuarios VALUES ('sgallego', 'Sergio Gallego', 'sgallego@gmail.com',
 ('mantonio', 'Manuel Antonio', 'mantonio@gmail.com', 'ma14', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26'),
 ('msantoro', 'Marco Santoro', 'msantoro@gmail.com', 'ms15', 000000000, 20, 20, 1000, 'España', '2000-01-01', '2002-07-26');
 
-INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username) VALUES 
-('Mensaje 1', 23, 100, 50, 10, 23, '2023-07-26', 10, 'sgallego'),
-('Mensaje 2', 50, 80, 23, 11, 21, '2023-07-26', 0, 'jdnavarro'),
-('Mensaje 3', 21, 20, 56, 56, 67, '2023-07-26', 2, 'jgras'),
-('Mensaje 4', 9, 20, 78, 11, 99, '2023-07-26', 20, 'mantonio'),
-('Mensaje 5', 67, 130, 89, 1, 100, '2023-07-26', 5, 'msantoro');
+INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username)
+VALUES ('Mensaje 1', 23, 100, 50, 10, 23, '2023-07-26', 10, 'sgallego');
+INSERT INTO mensajes (contenido, likes, visualizaciones, retwitts, bookmarks, citas, fecha, num_respuestas, username, id_mensaje_og) VALUES 
+('Mensaje 1', 23, 100, 50, 10, 23, '2023-07-26', 10, 'sgallego', 1),
+('Mensaje 2', 50, 80, 23, 11, 21, '2023-07-26', 0, 'jdnavarro', 2),
+('Mensaje 3', 21, 20, 56, 56, 67, '2023-07-26', 2, 'jgras', 3),
+('Mensaje 4', 9, 20, 78, 11, 99, '2023-07-26', 20, 'mantonio', 4),
+('Mensaje 5', 67, 130, 89, 1, 100, '2023-07-26', 5, 'msantoro', 5);
 
 INSERT INTO hashtags (nombre, usos) VALUES 
 ('#Elecciones', 1),
@@ -100,13 +97,11 @@ INSERT INTO tendencias (nombre, usos) VALUES
 ('Record', 2345),
 ('Conferencia', 1200);
 
-INSERT INTO tiene_mensaje VALUES (1,2),(3,4),(4,5);
 INSERT INTO mensaje_hashtag VALUES (1,2),(3,4),(4,5);
 INSERT INTO mensaje_tendencia VALUES (1,2),(3,4),(4,5);
 
 SELECT * FROM usuarios;
 SELECT * FROM mensajes;
-SELECT * FROM tiene_mensaje;
 SELECT * FROM hashtags;
 
 UPDATE usuarios SET num_twitts=num_twitts*2 LIMIT 2;
@@ -124,6 +119,5 @@ DELETE FROM usuarios WHERE username='msantoro';
 
 SELECT * FROM usuarios;
 SELECT * FROM mensajes;
-SELECT * FROM tiene_mensaje;
 SELECT * FROM mensaje_hashtag;
 SELECT * FROM mensaje_tendencia;
